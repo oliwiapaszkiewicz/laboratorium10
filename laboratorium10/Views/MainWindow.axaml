@@ -1,0 +1,47 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
+        x:Class="laboratorium10.Views.MainWindow"
+        Title="Analiza FASTA" Width="800" Height="600"
+        mc:Ignorable="d">
+
+	<DockPanel>
+		<Button DockPanel.Dock="Top" Content="Wczytaj plik FASTA" Click="LoadFastaFile_Click" Margin="5"/>
+
+		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+			<Button Content="Eksportuj do CSV" Click="ExportToCsv_Click" Margin="0,0,5,0"/>
+			<Button Content="Eksportuj do JSON" Click="ExportToJson_Click"/>
+		</StackPanel>
+
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="2*"/>
+				<ColumnDefinition Width="3*"/>
+			</Grid.ColumnDefinitions>
+
+			<ListBox Grid.Column="0" ItemsSource="{Binding Sequences}" SelectedItem="{Binding SelectedSequence}" Margin="5">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel>
+							<TextBlock Text="{Binding Id}" FontWeight="Bold"/>
+							<TextBlock Text="{Binding Length, StringFormat='Długość: {0}'}"/>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+
+			<StackPanel Grid.Column="1" Margin="5">
+				<TextBlock Text="{Binding SelectedSequence.Id}" FontSize="18" FontWeight="Bold"/>
+				<TextBlock Text="{Binding SelectedSequence.Description}" FontStyle="Italic" Margin="0,0,0,10"/>
+				<TextBlock Text="{Binding SelectedSequence.Sequence}" TextWrapping="Wrap" Height="100"/>
+
+				<TextBlock Text="{Binding SelectedSequence.GCContent, StringFormat='Zawartość GC: {0:F2}%'}" Margin="0,10,0,0"/>
+				<TextBlock Text="{Binding SelectedSequence.CodonCount, StringFormat='Liczba kodonów: {0}'}"/>
+
+				<lvc:CartesianChart Series="{Binding ChartSeries}" LegendPosition="Right" Height="200" Margin="0,20,0,0"/>
+			</StackPanel>
+		</Grid>
+	</DockPanel>
+</Window>
